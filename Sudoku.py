@@ -1,8 +1,5 @@
 import numpy as np
 
-
-
-
 def print_board(bo):
     for i in range(0,len(bo)):
         if i % 3 == 0 and i != 0:
@@ -21,7 +18,7 @@ def if_valid(bo,k,n,m):
     valid = True
 
     for i in range(0,9):
-        if bo[i][n] == k:
+        if bo[n][i] == k:
             valid = False
 
     for i in range(0,9):
@@ -31,9 +28,12 @@ def if_valid(bo,k,n,m):
     return valid
 
 def checker(bo):
-    for i in range(0,8):
-        for j in range(0,8):
-            pass
+    for i in range(0,9):
+        for j in range(0,9):
+            for v in range(1,10):
+                if bo[i][j] == 0:
+                    if if_valid(bo,v,i,j) == True:
+                        bo[i][j] = v
 
 
 
@@ -53,4 +53,6 @@ board = np.array([
 print_board(board)
 checker(board)
 print("--------------------------------------------")
+print("--------------------------------------------")
 print_board(board)
+
