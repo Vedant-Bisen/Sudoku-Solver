@@ -1,11 +1,9 @@
-import numpy as np
-
 def print_board(bo):
     for i in range(0,len(bo)):
         if i % 3 == 0 and i != 0:
             print("_______________________")
 
-        for j in range(0,len(bo[0])):
+        for j in range(len(bo[0])):
             if j % 3 == 0 and j != 0:
                 print(" | ",end="")
             
@@ -14,49 +12,78 @@ def print_board(bo):
             else:
                 print(str(bo[i][j])+ " ",end="")
 
-def if_valid(bo,k,n,m):
-    valid = True
+def if_valid(bo,num,pos):
 
     #check row
-    for i in range(0,9):
-        if bo[n][i] == k:
-            valid = False
-    #check col
-    for i in range(0,9):
-        if bo[i][m] == k:
-            valid = False
+    for i in range(len(bo[0])):
+        if bo[pos[0]][i] == num and pos[1] != i:
+            return False
     
-    return valid
-
-def checker(bo):
-    #traverse row
+    #check col
     for i in range(len(bo)):
-        #traverse col
+        if bo[i][pos[1]] == num and pos[0] != i:
+            return False
+    
+    #check box
+    box_x = pos[1]//3
+    box_y = pos[0]//3
+
+    for i in range(box_y * 3, box_y * 3 +3 ):
+        for j in range(box_x * 3, box_x * 3 +3 ):
+            if bo[i][j] == num and (i,j) != pos:
+                return False
+
+    return True
+
+def empty(bo):  
+       
+    #check for empty or those row, col with 0 in them
+    for i in range(len(bo)):
         for j in range(len(bo[0])):
-            #assign value
-            for v in range(1,10):
-                if bo[i][j] == 0:
-                    if if_valid(bo,v,i,j) == True:
-                        bo[i][j] = v
+            if bo[i][j] == 0:
+                return (i, j)
+    return None
+
+def solve(bo):
+
+    #If no more empty exit reccur
+    find = empty(bo)
+    if not find:
+        return True
+    else:
+        row,col = find
+
+    #Check all digits one by one
+    for i in range(1,10):
+        if if_valid(bo,i,(row,col)):
+            bo[row][col] = i
+
+            
+            if solve(bo):
+                return True
+            
+            #Backtrack
+            bo[row][col] = 0
+        
+    return False
 
 
 
-
-board = np.array([
-    [0,0,4,0,5,0,0,0,0],
-    [9,0,0,7,3,4,6,0,0],
-    [0,0,3,0,2,1,0,4,9],
-    [0,3,5,0,9,0,4,8,0],
-    [0,9,0,0,0,0,0,3,0],
-    [0,7,6,0,1,0,9,2,0],
-    [3,1,0,9,7,0,2,0,0],
-    [0,0,9,1,8,2,0,0,3],
-    [0,0,0,0,6,0,1,0,0]
-    ])
+board = [
+    [0,0,0,0,5,6,0,9,0],
+    [0,5,0,4,0,0,0,0,0],
+    [0,6,0,3,8,0,0,4,5],
+    [0,0,6,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,2,0],
+    [3,0,0,0,1,0,8,0,0],
+    [0,0,0,0,4,0,7,0,8],
+    [8,0,0,7,0,3,2,6,0],
+    [0,0,7,8,0,5,0,0,4]
+]
 
 print_board(board)
-checker(board)
-print("--------------------------------------------")
-print("--------------------------------------------")
+solve(board)
+print("--------------------------------------")
 print_board(board)
+
 
