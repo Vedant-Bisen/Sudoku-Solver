@@ -17,10 +17,11 @@ def print_board(bo):
 def if_valid(bo,k,n,m):
     valid = True
 
+    #check row
     for i in range(0,9):
         if bo[n][i] == k:
             valid = False
-
+    #check col
     for i in range(0,9):
         if bo[i][m] == k:
             valid = False
@@ -28,8 +29,11 @@ def if_valid(bo,k,n,m):
     return valid
 
 def checker(bo):
-    for i in range(0,9):
-        for j in range(0,9):
+    #traverse row
+    for i in range(len(bo)):
+        #traverse col
+        for j in range(len(bo[0])):
+            #assign value
             for v in range(1,10):
                 if bo[i][j] == 0:
                     if if_valid(bo,v,i,j) == True:
