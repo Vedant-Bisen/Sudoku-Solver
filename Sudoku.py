@@ -1,4 +1,4 @@
-#Sudeku-Solver
+import time
 board = [
     [4,0,0,0,5,6,0,9,0],
     [0,5,0,4,0,0,0,0,0],
@@ -83,8 +83,9 @@ def solve(bo):
 
 
 print_board(board)
+a = time.time()
 solve(board)
+b = time.time()
 print("--------------------------------------")
 print_board(board)
-
-
+print(b-a)
